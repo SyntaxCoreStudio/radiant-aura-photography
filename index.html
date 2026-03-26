@@ -61,18 +61,45 @@
 
         <main>
                 
-            <div class="carousel">
-                <a href="gallery.html">
-                <img id="carousel-image" src="Gallery/highlights/Image2.jpeg" alt="Newborn baby in a basket" loading="lazy" />
-            </div>
-            </a>
+<section class="gallery-section">
+    <h2>Explore My Portfolio</h2>
+    <div class="gallery-grid">
+
+
+        <div class="gallery-item">
+            <img src="Gallery/highlights/family/Image22.jpg" alt="Description" loading="lazy">
+        </div>
+
+                <div class="gallery-item">
+            <img src="Gallery/highlights/formal/Image28.jpeg" alt="Description" loading="lazy">
+        </div>
+
+                <div class="gallery-item">
+            <img src="Gallery/highlights/maternity/Image4.jpeg" alt="Description" loading="lazy">
+        </div>
+
+                <div class="gallery-item">
+            <img src="Gallery/highlights/maternity/Image16.jpg" alt="Description" loading="lazy">
+        </div>
+
+                        <div class="gallery-item">
+            <img src="Gallery/highlights/formal/alice-image1.jpg" alt="Description" loading="lazy">
+        </div>
+
+                <div class="gallery-item">
+            <img src="Gallery/highlights/family/Image6.jpg" alt="Description" loading="lazy">
+        </div>
+
+
+        </div>
+</section>
 
             <section id="aboutMe">
                 <h2>About Me</h2>
                 <div class="section-grid">
                     <div class="col">
                 <p>
-                    Hey everyone! Are you ready to capture the beautiful moments in your life?<br><br> 
+                    <strong>Hey everyone! Are you ready to capture the beautiful moments in your life?</strong><br><br> 
                     Let me introduce myself!<br> My name is Sarah, and I’m the creative soul 
                     behind Radiant Aura Photography.<br> 
                     My photography journey began back in year 10, 
@@ -95,23 +122,35 @@
             </section>
 
         
-        <section id="contact" class="contact-section">
-    <h2>Contact Me</h2>
+<section id="contact" class="contact-section">
+    <div class="contact-header">
+        <h2>Get in Touch</h2>
+        <p>Let’s capture your story. Fill out the form below and I'll get back to you shortly.</p>
+    </div>
 
     <form id="contactForm">
-    <input type="text" name="name" placeholder="Your name" required>
-    <input type="email" name="email" placeholder="Your email" required>
-    <textarea name="message" placeholder="Your message" required></textarea>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your full name" required>
+        </div>
 
-    <input type="text" name="_honey" style="display:none" autocomplete="off">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_template" value="box">
-    <input type="hidden" name="_subject" value="New message from your portfolio!">
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="hello@reallygreatsite.com" required>
+        </div>
 
-    <button type="submit" id="submitBtn">
-        <span class="btn-text">Send</span>
-        <span class="btn-loader"></span>
-    </button>
+        <div class="form-group">
+            <label for="message">How can I help?</label>
+            <textarea id="message" name="message" rows="5" placeholder="Tell me about your session ideas..." required></textarea>
+        </div>
+
+        <input type="text" name="_honey" style="display:none" autocomplete="off">
+        <input type="hidden" name="_captcha" value="false">
+        
+        <button type="submit" id="submitBtn">
+            <span class="btn-text">Send Message</span>
+            <span class="btn-loader"></span>
+        </button>
     </form>
 </section>
 
