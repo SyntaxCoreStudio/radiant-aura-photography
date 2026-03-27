@@ -103,35 +103,42 @@ const btnLoader = submitBtn.querySelector(".btn-loader");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  // Show loader, disable button
   btnText.style.display = "none";
   btnLoader.style.display = "inline-block";
   submitBtn.disabled = true;
 
   const formData = new FormData(form);
 
+  // convert to JSON
+  const data = Object.fromEntries(formData.entries());
+
   try {
-    const response = await fetch("https://formsubmit.co/el/bizara", {
+    const response = await fetch("/api/contact", {
       method: "POST",
-      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     });
 
-    if (response.ok) {
-      // Redirect to thank you page
-      window.location.href = "https://radiantauraphotography.com/thankyou.html";
+    const result = await response.json();
+
+    if (result.success) {
+      window.location.href = "/thankyou.html";
     } else {
-      alert("Oops, something went wrong. Please try again.");
-      // Reset button state
+      alert(result.message);
+
       btnText.style.display = "inline";
       btnLoader.style.display = "none";
       submitBtn.disabled = false;
     }
   } catch (error) {
-    alert("Network error. Please check your connection and try again.");
-    // Reset button state
+    alert("Network error. Please try again.");
+
     btnText.style.display = "inline";
     btnLoader.style.display = "none";
     submitBtn.disabled = false;
+
     console.error(error);
   }
 });

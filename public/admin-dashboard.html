@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | Radiant Aura Photography</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f4f2;
+      color: #222;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: white;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .dashboard-header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+
+    .logout-btn {
+      border: none;
+      background: black;
+      color: white;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .dashboard-main {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .welcome-card,
+    .section-card {
+      background: white;
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      margin-bottom: 1.5rem;
+    }
+
+    .welcome-card h2,
+    .section-card h2 {
+      margin-top: 0;
+    }
+
+    .placeholder-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .placeholder-box {
+      background: #fafafa;
+      border: 1px dashed #ccc;
+      border-radius: 14px;
+      padding: 1rem;
+      min-height: 120px;
+    }
+
+    .status-message {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="dashboard-header">
+    <h1>Radiant Aura Admin</h1>
+    <button id="logoutBtn" class="logout-btn">Log Out</button>
+  </header>
+
+  <main class="dashboard-main">
+    <section class="welcome-card">
+      <h2>Welcome back</h2>
+      <p>You’re now logged into the admin dashboard.</p>
+      <p>This is where we’ll add gallery uploads, client links, and download controls next.</p>
+      <p id="statusMessage" class="status-message"></p>
+    </section>
+
+    <section class="section-card">
+      <h2>Upcoming Features</h2>
+      <div class="placeholder-grid">
+        <div class="placeholder-box">
+          <strong>Create Client Gallery</strong>
+          <p>Make a private gallery for each client.</p>
+        </div>
+        <div class="placeholder-box">
+          <strong>Upload Images</strong>
+          <p>Upload full-resolution photos securely.</p>
+        </div>
+        <div class="placeholder-box">
+          <strong>Share Link</strong>
+          <p>Generate a private client gallery link.</p>
+        </div>
+        <div class="placeholder-box">
+          <strong>Client Downloads</strong>
+          <p>Allow image or ZIP downloads later.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const logoutBtn = document.getElementById("logoutBtn");
+    const statusMessage = document.getElementById("statusMessage");
+
+    logoutBtn.addEventListener("click", async () => {
+      statusMessage.textContent = "Logging out...";
+
+      try {
+        const response = await fetch("/admin/logout", {
+          method: "POST"
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          window.location.href = "/admin/login";
+        } else {
+          statusMessage.textContent = "Logout failed.";
+        }
+      } catch (error) {
+        console.error("Logout error:", error);
+        statusMessage.textContent = "Something went wrong during logout.";
+      }
+    });
+  </script>
+</body>
+</html>
