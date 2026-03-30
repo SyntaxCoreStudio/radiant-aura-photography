@@ -5,9 +5,12 @@ require("dotenv").config();
 
 const contactRoutes = require("./routes/contact");
 const adminRoutes = require("./routes/admin");
+const apiAdminRoutes = require("./routes/api-admin");
 
 const app = express();
 const PORT = process.env.PORT || 3005;
+
+app.set("trust proxy", 1);
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -29,8 +32,12 @@ app.use(
 // Serve public files
 app.use(express.static(path.join(__dirname, "public")));
 
+// Serve uploaded files
+app.use("/uploads", express.static(path.join(__dirname, "storage")));
+
 // API routes
 app.use("/api/contact", contactRoutes);
+app.use("/api/admin", apiAdminRoutes);
 app.use("/admin", adminRoutes);
 
 // Test route
