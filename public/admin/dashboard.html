@@ -401,50 +401,36 @@
             const card = document.createElement("div");
             card.className = "gallery-card";
 
-            let imagesHtml = "<p>No images uploaded yet.</p>";
-
-            if (gallery.images.length > 0) {
-              imagesHtml = `
-                <div class="gallery-images">
-                  ${gallery.images
-                    .map(
-                      (image) => `
-                    <div class="image-card">
-                      <img src="${image.url}" alt="${escapeHtml(image.filename)}">
-                      <div class="image-card-footer">
-                        <button
-                          class="delete-btn"
-                          onclick="deleteImage('${escapeJsString(gallery.name)}', '${escapeJsString(image.filename)}')"
-                        >
-                          Delete Image
-                        </button>
-                      </div>
-                    </div>
-                  `,
-                    )
-                    .join("")}
-                </div>
-              `;
-            }
+            const folderId = `folder-${gallery.name}`;
 
             card.innerHTML = `
-              <div class="gallery-head">
-                <div>
-                  <strong>${escapeHtml(gallery.name)}</strong>
-                  <p style="margin: 0.35rem 0 0 0; color: #666;">${gallery.imageCount} image(s)</p>
-                </div>
+    <div class="gallery-head">
+      <div>
+        <strong>📁 ${escapeHtml(gallery.name)}</strong>
+        <p style="margin: 0.35rem 0 0 0; color: #666;">
+          ${gallery.imageCount} image(s)
+        </p>
+      </div>
 
-                <div class="gallery-actions">
-                  <button
-                    class="danger-btn"
-                    onclick="deleteGallery('${escapeJsString(gallery.name)}')"
-                  >
-                    Delete Gallery
-                  </button>
-                </div>
-              </div>
-              ${imagesHtml}
-            `;
+      <div class="gallery-actions">
+        <button
+          class="primary-btn"
+          onclick="toggleFolder('${escapeJsString(folderId)}')"
+        >
+          Open
+        </button>
+
+        <button
+          class="danger-btn"
+          onclick="deleteGallery('${escapeJsString(gallery.name)}')"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+
+    <div id="${folderId}" class="gallery-images" style="display:none;"></div>
+  `;
 
             galleryList.appendChild(card);
           });
@@ -638,6 +624,82 @@
           .replaceAll("\\", "\\\\")
           .replaceAll("'", "\\'")
           .replaceAll('"', '\\"');
+      }
+
+      async function toggleFolder(folderId) {
+        const container = document.getElementById(folderId);
+        const button = container
+          .closest(".gallery-card")
+          .querySelector(".primary-btn");
+
+        if (isOpen) {
+          button.textContent = "Open";
+        } else {
+          button.textContent = "Close";
+        }
+
+        if (!container) return;
+
+        const isOpen = container.style.display === "flex";
+
+        if (isOpen) {
+          container.style.display = "none";
+          return;
+        }
+
+        // If already loaded, just open
+        if (container.dataset.loaded === "true") {
+          container.style.display = "flex";
+          return;
+        }
+
+        // Show loading
+        container.innerHTML = "<p>Loading images...</p>";
+        container.style.display = "flex";
+
+        try {
+          const response = await fetch("/api/admin/galleries", {
+            credentials: "include",
+          });
+
+          const result = await readJsonResponse(response);
+
+          const galleryName = folderId.replace("folder-", "");
+          const gallery = result.galleries.find((g) => g.name === galleryName);
+
+          if (!gallery) {
+            container.innerHTML = "<p>Gallery not found.</p>";
+            return;
+          }
+
+          if (gallery.images.length === 0) {
+            container.innerHTML = "<p>No images found.</p>";
+            return;
+          }
+
+          container.innerHTML = gallery.images
+            .map(
+              (image) => `
+      <div class="image-card">
+        <img src="${image.url}" alt="${escapeHtml(image.filename)}">
+        <div class="image-card-footer">
+          <button
+            class="delete-btn"
+            onclick="deleteImage('${escapeJsString(gallery.name)}', '${escapeJsString(image.filename)}')"
+          >
+            Delete Image
+          </button>
+        </div>
+      </div>
+    `,
+            )
+            .join("");
+
+          container.dataset.loaded = "true";
+        } catch (error) {
+          console.error("Load folder error:", error);
+          container.innerHTML = "<p>Failed to load images.</p>";
+        }
       }
 
       loadGalleries();
