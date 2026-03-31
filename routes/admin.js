@@ -58,8 +58,14 @@ router.post("/login", async (req, res) => {
 });
 
 // Protected dashboard page
-router.get("/dashboard", requireAuth, (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "admin-dashboard.html"));
+router.get("/dashboard", (req, res) => {
+  if (!req.session.isAdmin) {
+    return res.redirect("/admin/login");
+  }
+
+  return res.sendFile(
+    path.join(__dirname, "..", "public", "admin", "dashboard.html")
+  );
 });
 
 // Logout

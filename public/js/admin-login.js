@@ -22,7 +22,7 @@ if (adminLoginForm) {
       const result = await response.json();
 
       if (result.success) {
-        window.location.href = "/admin/dashboard";
+        window.location.href = "/admin/dashboard.html";
       } else {
         loginStatus.textContent = result.message;
       }
