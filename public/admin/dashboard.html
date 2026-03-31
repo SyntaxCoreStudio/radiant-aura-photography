@@ -419,6 +419,7 @@
           });
 
           const result = await response.json();
+          console.log("UPLOAD RESPONSE:", text);
           uploadStatus.textContent = result.message;
 
           if (result.success) {
