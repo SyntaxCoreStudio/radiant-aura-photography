@@ -316,7 +316,7 @@
           const result = await readJsonResponse(response);
 
           if (result.success) {
-            window.location.href = "/admin/login";
+            window.location.href = "public/index.html";
           } else {
             alert(result.message || "Logout failed.");
           }
