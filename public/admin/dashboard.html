@@ -628,34 +628,30 @@
 
       async function toggleFolder(folderId) {
         const container = document.getElementById(folderId);
+        if (!container) return;
+
         const button = container
           .closest(".gallery-card")
           .querySelector(".primary-btn");
-
-        if (isOpen) {
-          button.textContent = "Open";
-        } else {
-          button.textContent = "Close";
-        }
-
-        if (!container) return;
 
         const isOpen = container.style.display === "flex";
 
         if (isOpen) {
           container.style.display = "none";
+          button.textContent = "Open";
           return;
         }
 
-        // If already loaded, just open
+        button.textContent = "Close";
+
+        // Already loaded, just open it
         if (container.dataset.loaded === "true") {
-          container.style.display = "flex";
+          container.style.display = "grid";
           return;
         }
 
-        // Show loading
         container.innerHTML = "<p>Loading images...</p>";
-        container.style.display = "flex";
+        container.style.display = "block";
 
         try {
           const response = await fetch("/api/admin/galleries", {
@@ -674,28 +670,30 @@
 
           if (gallery.images.length === 0) {
             container.innerHTML = "<p>No images found.</p>";
+            container.dataset.loaded = "true";
             return;
           }
 
           container.innerHTML = gallery.images
             .map(
               (image) => `
-      <div class="image-card">
-        <img src="${image.url}" alt="${escapeHtml(image.filename)}">
-        <div class="image-card-footer">
-          <button
-            class="delete-btn"
-            onclick="deleteImage('${escapeJsString(gallery.name)}', '${escapeJsString(image.filename)}')"
-          >
-            Delete Image
-          </button>
-        </div>
-      </div>
-    `,
+          <div class="image-card">
+            <img src="${image.url}" alt="${escapeHtml(image.filename)}">
+            <div class="image-card-footer">
+              <button
+                class="delete-btn"
+                onclick="deleteImage('${escapeJsString(gallery.name)}', '${escapeJsString(image.filename)}')"
+              >
+                Delete Image
+              </button>
+            </div>
+          </div>
+        `,
             )
             .join("");
 
           container.dataset.loaded = "true";
+          container.style.display = "grid";
         } catch (error) {
           console.error("Load folder error:", error);
           container.innerHTML = "<p>Failed to load images.</p>";
@@ -705,6 +703,7 @@
       loadGalleries();
       window.deleteImage = deleteImage;
       window.deleteGallery = deleteGallery;
+      window.toggleFolder = toggleFolder;
     </script>
   </body>
 </html>
