@@ -1,300 +1,313 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard | Radiant Aura Photography</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | Radiant Aura Photography</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f7f4f2;
-      color: #222;
-    }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f7f4f2;
+        color: #222;
+      }
 
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 1.5rem;
-      background: white;
-      border-bottom: 1px solid #e5e5e5;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+      .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        background: white;
+        border-bottom: 1px solid #e5e5e5;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
 
-    .dashboard-header h1 {
-      margin: 0;
-      font-size: 1.4rem;
-    }
+      .dashboard-header h1 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
 
-    .logout-btn {
-      border: none;
-      background: black;
-      color: white;
-      padding: 0.75rem 1rem;
-      border-radius: 10px;
-      cursor: pointer;
-    }
+      .logout-btn {
+        border: none;
+        background: black;
+        color: white;
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        cursor: pointer;
+      }
 
-    .dashboard-main {
-      max-width: 1100px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
+      .dashboard-main {
+        max-width: 1100px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
 
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 1.5rem;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-      margin-bottom: 1.5rem;
-    }
+      .card {
+        background: white;
+        border-radius: 18px;
+        padding: 1.5rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        margin-bottom: 1.5rem;
+      }
 
-    h2 {
-      margin-top: 0;
-    }
+      h2 {
+        margin-top: 0;
+      }
 
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
 
-    .form-row {
-      display: grid;
-      gap: 1rem;
-      grid-template-columns: 1fr auto;
-      align-items: end;
-    }
-
-    input,
-    select,
-    button {
-      font: inherit;
-    }
-
-    input[type="text"],
-    input[type="file"],
-    select {
-      width: 100%;
-      padding: 0.9rem 1rem;
-      border-radius: 12px;
-      border: 1px solid #d8d8d8;
-      background: #fff;
-    }
-
-    .primary-btn {
-      border: none;
-      background: black;
-      color: white;
-      padding: 0.95rem 1.2rem;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-
-    .primary-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .status-message {
-      margin-top: 1rem;
-      font-size: 0.95rem;
-      color: #444;
-    }
-
-    .gallery-list {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .gallery-card {
-      border: 1px solid #ececec;
-      border-radius: 16px;
-      padding: 1rem;
-      background: #fcfcfc;
-    }
-
-    .gallery-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .gallery-images {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 0.75rem;
-    }
-
-    .image-card {
-      border: 1px solid #eee;
-      border-radius: 12px;
-      overflow: hidden;
-      background: white;
-    }
-
-    .image-card img {
-      width: 100%;
-      height: 140px;
-      object-fit: cover;
-      display: block;
-      background: #f3f3f3;
-    }
-
-    .image-card-footer {
-      padding: 0.5rem;
-    }
-
-    .delete-btn {
-      width: 100%;
-      border: none;
-      background: #f2f2f2;
-      padding: 0.6rem;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .helper-text {
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
-      color: #666;
-    }
-
-    @media (max-width: 700px) {
       .form-row {
-        grid-template-columns: 1fr;
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: 1fr auto;
+        align-items: end;
       }
-    }
-  </style>
-</head>
-<body>
-  <header class="dashboard-header">
-    <h1>Radiant Aura Admin</h1>
-    <button id="logoutBtn" class="logout-btn">Log Out</button>
-  </header>
 
-  <main class="dashboard-main">
-    <section class="card">
-      <h2>Create Client Gallery</h2>
-      <div class="form-row">
-        <div>
-          <label for="clientName">Client Name</label>
-          <input id="clientName" type="text" placeholder="e.g. Sarah and James" />
+      input,
+      select,
+      button {
+        font: inherit;
+      }
+
+      input[type="text"],
+      input[type="file"],
+      select {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        border-radius: 12px;
+        border: 1px solid #d8d8d8;
+        background: #fff;
+      }
+
+      .primary-btn {
+        border: none;
+        background: black;
+        color: white;
+        padding: 0.95rem 1.2rem;
+        border-radius: 12px;
+        cursor: pointer;
+      }
+
+      .primary-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .status-message {
+        margin-top: 1rem;
+        font-size: 0.95rem;
+        color: #444;
+      }
+
+      .gallery-list {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .gallery-card {
+        border: 1px solid #ececec;
+        border-radius: 16px;
+        padding: 1rem;
+        background: #fcfcfc;
+      }
+
+      .gallery-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .gallery-images {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.75rem;
+      }
+
+      .image-card {
+        border: 1px solid #eee;
+        border-radius: 12px;
+        overflow: hidden;
+        background: white;
+      }
+
+      .image-card img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        display: block;
+        background: #f3f3f3;
+      }
+
+      .image-card-footer {
+        padding: 0.5rem;
+      }
+
+      .delete-btn {
+        width: 100%;
+        border: none;
+        background: #f2f2f2;
+        padding: 0.6rem;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .helper-text {
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      @media (max-width: 700px) {
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="dashboard-header">
+      <h1>Radiant Aura Admin</h1>
+      <button id="logoutBtn" class="logout-btn">Log Out</button>
+    </header>
+
+    <main class="dashboard-main">
+      <section class="card">
+        <h2>Create Client Gallery</h2>
+        <div class="form-row">
+          <div>
+            <label for="clientName">Client Name</label>
+            <input
+              id="clientName"
+              type="text"
+              placeholder="e.g. Sarah and James"
+            />
+          </div>
+          <button id="createGalleryBtn" class="primary-btn">
+            Create Gallery
+          </button>
         </div>
-        <button id="createGalleryBtn" class="primary-btn">Create Gallery</button>
-      </div>
-      <p id="createStatus" class="status-message"></p>
-    </section>
+        <p id="createStatus" class="status-message"></p>
+      </section>
 
-    <section class="card">
-      <h2>Upload Images</h2>
+      <section class="card">
+        <h2>Upload Images</h2>
 
-      <div style="margin-bottom: 1rem;">
-        <label for="gallerySelect">Select Gallery</label>
-        <select id="gallerySelect">
-          <option value="">Choose a gallery</option>
-        </select>
-      </div>
+        <div style="margin-bottom: 1rem">
+          <label for="gallerySelect">Select Gallery</label>
+          <select id="gallerySelect">
+            <option value="">Choose a gallery</option>
+          </select>
+        </div>
 
-      <div style="margin-bottom: 1rem;">
-        <label for="imageInput">Choose Images</label>
-        <input id="imageInput" type="file" multiple accept="image/jpeg,image/png,image/webp" />
-        <p class="helper-text">You can select multiple images at once.</p>
-      </div>
+        <div style="margin-bottom: 1rem">
+          <label for="imageInput">Choose Images</label>
+          <input
+            id="imageInput"
+            type="file"
+            multiple
+            accept="image/jpeg,image/png,image/webp"
+          />
+          <p class="helper-text">You can select multiple images at once.</p>
+        </div>
 
-      <button id="uploadBtn" class="primary-btn">Upload Images</button>
-      <p id="uploadStatus" class="status-message"></p>
-    </section>
+        <button id="uploadBtn" class="primary-btn">Upload Images</button>
+        <p id="uploadStatus" class="status-message"></p>
+      </section>
 
-    <section class="card">
-      <h2>Existing Galleries</h2>
-      <div id="galleryList" class="gallery-list">
-        <p>Loading galleries...</p>
-      </div>
-    </section>
-  </main>
+      <section class="card">
+        <h2>Existing Galleries</h2>
+        <div id="galleryList" class="gallery-list">
+          <p>Loading galleries...</p>
+        </div>
+      </section>
+    </main>
 
-  <script>
-    const logoutBtn = document.getElementById("logoutBtn");
-    const clientNameInput = document.getElementById("clientName");
-    const createGalleryBtn = document.getElementById("createGalleryBtn");
-    const createStatus = document.getElementById("createStatus");
+    <script>
+      const logoutBtn = document.getElementById("logoutBtn");
+      const clientNameInput = document.getElementById("clientName");
+      const createGalleryBtn = document.getElementById("createGalleryBtn");
+      const createStatus = document.getElementById("createStatus");
 
-    const gallerySelect = document.getElementById("gallerySelect");
-    const imageInput = document.getElementById("imageInput");
-    const uploadBtn = document.getElementById("uploadBtn");
-    const uploadStatus = document.getElementById("uploadStatus");
+      const gallerySelect = document.getElementById("gallerySelect");
+      const imageInput = document.getElementById("imageInput");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const uploadStatus = document.getElementById("uploadStatus");
 
-    const galleryList = document.getElementById("galleryList");
+      const galleryList = document.getElementById("galleryList");
 
-    logoutBtn.addEventListener("click", async () => {
-      try {
-        const response = await fetch("/admin/logout", {
-          method: "POST",
-          credentials: "include"
-        });
+      logoutBtn.addEventListener("click", async () => {
+        try {
+          const response = await fetch("/admin/logout", {
+            method: "POST",
+            credentials: "include",
+          });
 
-        const result = await response.json();
+          const result = await response.json();
 
-        if (result.success) {
-          window.location.href = "/admin/login";
-        } else {
-          alert("Logout failed.");
+          if (result.success) {
+            window.location.href = "/admin/login";
+          } else {
+            alert("Logout failed.");
+          }
+        } catch (error) {
+          console.error("Logout error:", error);
+          alert("Something went wrong during logout.");
         }
-      } catch (error) {
-        console.error("Logout error:", error);
-        alert("Something went wrong during logout.");
-      }
-    });
+      });
 
-    async function loadGalleries() {
-      galleryList.innerHTML = "<p>Loading galleries...</p>";
-      gallerySelect.innerHTML = '<option value="">Choose a gallery</option>';
+      async function loadGalleries() {
+        galleryList.innerHTML = "<p>Loading galleries...</p>";
+        gallerySelect.innerHTML = '<option value="">Choose a gallery</option>';
 
-      try {
-        const response = await fetch("/api/admin/galleries", {
-          credentials: "include"
-        });
+        try {
+          const response = await fetch("/api/admin/galleries", {
+            credentials: "include",
+          });
 
-        const result = await response.json();
+          const result = await response.json();
 
-        if (!result.success) {
-          galleryList.innerHTML = "<p>Failed to load galleries.</p>";
-          return;
-        }
+          if (!result.success) {
+            galleryList.innerHTML = "<p>Failed to load galleries.</p>";
+            return;
+          }
 
-        if (result.galleries.length === 0) {
-          galleryList.innerHTML = "<p>No galleries yet.</p>";
-          return;
-        }
+          if (result.galleries.length === 0) {
+            galleryList.innerHTML = "<p>No galleries yet.</p>";
+            return;
+          }
 
-        galleryList.innerHTML = "";
+          galleryList.innerHTML = "";
 
-        result.galleries.forEach((gallery) => {
-          const option = document.createElement("option");
-          option.value = gallery.name;
-          option.textContent = `${gallery.name} (${gallery.imageCount})`;
-          gallerySelect.appendChild(option);
+          result.galleries.forEach((gallery) => {
+            const option = document.createElement("option");
+            option.value = gallery.name;
+            option.textContent = `${gallery.name} (${gallery.imageCount})`;
+            gallerySelect.appendChild(option);
 
-          const card = document.createElement("div");
-          card.className = "gallery-card";
+            const card = document.createElement("div");
+            card.className = "gallery-card";
 
-          let imagesHtml = "<p>No images uploaded yet.</p>";
+            let imagesHtml = "<p>No images uploaded yet.</p>";
 
-          if (gallery.images.length > 0) {
-            imagesHtml = `
+            if (gallery.images.length > 0) {
+              imagesHtml = `
               <div class="gallery-images">
-                ${gallery.images.map((image) => `
+                ${gallery.images
+                  .map(
+                    (image) => `
                   <div class="image-card">
                     <img src="${image.url}" alt="${image.filename}">
                     <div class="image-card-footer">
@@ -303,12 +316,14 @@
                       </button>
                     </div>
                   </div>
-                `).join("")}
+                `,
+                  )
+                  .join("")}
               </div>
             `;
-          }
+            }
 
-          card.innerHTML = `
+            card.innerHTML = `
             <div class="gallery-head">
               <div>
                 <strong>${gallery.name}</strong>
@@ -318,125 +333,135 @@
             ${imagesHtml}
           `;
 
-          galleryList.appendChild(card);
-        });
-      } catch (error) {
-        console.error("Load galleries error:", error);
-        galleryList.innerHTML = "<p>Something went wrong loading galleries.</p>";
-      }
-    }
-
-    createGalleryBtn.addEventListener("click", async () => {
-      const clientName = clientNameInput.value.trim();
-
-      if (!clientName) {
-        createStatus.textContent = "Please enter a client name.";
-        return;
-      }
-
-      createGalleryBtn.disabled = true;
-      createStatus.textContent = "Creating gallery...";
-
-      try {
-        const response = await fetch("/api/admin/galleries", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          credentials: "include",
-          body: JSON.stringify({ clientName })
-        });
-
-        const result = await response.json();
-        createStatus.textContent = result.message;
-
-        if (result.success) {
-          clientNameInput.value = "";
-          await loadGalleries();
+            galleryList.appendChild(card);
+          });
+        } catch (error) {
+          console.error("Load galleries error:", error);
+          galleryList.innerHTML =
+            "<p>Something went wrong loading galleries.</p>";
         }
-      } catch (error) {
-        console.error("Create gallery error:", error);
-        createStatus.textContent = "Something went wrong creating the gallery.";
-      } finally {
-        createGalleryBtn.disabled = false;
-      }
-    });
-
-    uploadBtn.addEventListener("click", async () => {
-      const clientName = gallerySelect.value;
-      const files = imageInput.files;
-
-      if (!clientName) {
-        uploadStatus.textContent = "Please select a gallery.";
-        return;
       }
 
-      if (!files.length) {
-        uploadStatus.textContent = "Please choose at least one image.";
-        return;
-      }
+      createGalleryBtn.addEventListener("click", async () => {
+        const clientName = clientNameInput.value.trim();
 
-      uploadBtn.disabled = true;
-      uploadStatus.textContent = "Uploading images...";
-
-      const formData = new FormData();
-      formData.append("clientName", clientName);
-
-      for (const file of files) {
-        formData.append("images", file);
-      }
-
-      try {
-        const response = await fetch("/api/admin/upload", {
-          method: "POST",
-          credentials: "include",
-          body: formData
-        });
-
-        const result = await response.json();
-        uploadStatus.textContent = result.message;
-
-        if (result.success) {
-          imageInput.value = "";
-          await loadGalleries();
+        if (!clientName) {
+          createStatus.textContent = "Please enter a client name.";
+          return;
         }
-      } catch (error) {
-        console.error("Upload error:", error);
-        uploadStatus.textContent = "Something went wrong during upload.";
-      } finally {
-        uploadBtn.disabled = false;
-      }
-    });
 
-    async function deleteImage(clientName, filename) {
-      const confirmed = confirm(`Delete ${filename}?`);
-      if (!confirmed) return;
+        createGalleryBtn.disabled = true;
+        createStatus.textContent = "Creating gallery...";
 
-      try {
-        const response = await fetch("/api/admin/images", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          credentials: "include",
-          body: JSON.stringify({ clientName, filename })
-        });
+        try {
+          const response = await fetch("/api/admin/upload", {
+            method: "POST",
+            credentials: "include",
+            body: formData,
+          });
 
-        const result = await response.json();
+          const text = await response.text();
+          console.log("Raw upload response:", text);
 
-        if (result.success) {
-          await loadGalleries();
-        } else {
-          alert(result.message || "Delete failed");
+          let result;
+          try {
+            result = JSON.parse(text);
+          } catch (error) {
+            throw new Error(
+              `Server returned non-JSON response: ${text.slice(0, 200)}`,
+            );
+          }
+
+          uploadStatus.textContent = result.message;
+
+          if (result.success) {
+            clientNameInput.value = "";
+            await loadGalleries();
+          }
+        } catch (error) {
+          console.error("Create gallery error:", error);
+          createStatus.textContent =
+            "Something went wrong creating the gallery.";
+        } finally {
+          createGalleryBtn.disabled = false;
         }
-      } catch (error) {
-        console.error("Delete error:", error);
-        alert("Something went wrong deleting the image.");
-      }
-    }
+      });
 
-    loadGalleries();
-    window.deleteImage = deleteImage;
-  </script>
-</body>
+      uploadBtn.addEventListener("click", async () => {
+        const clientName = gallerySelect.value;
+        const files = imageInput.files;
+
+        if (!clientName) {
+          uploadStatus.textContent = "Please select a gallery.";
+          return;
+        }
+
+        if (!files.length) {
+          uploadStatus.textContent = "Please choose at least one image.";
+          return;
+        }
+
+        uploadBtn.disabled = true;
+        uploadStatus.textContent = "Uploading images...";
+
+        const formData = new FormData();
+        formData.append("clientName", clientName);
+
+        for (const file of files) {
+          formData.append("images", file);
+        }
+
+        try {
+          const response = await fetch("/api/admin/upload", {
+            method: "POST",
+            credentials: "include",
+            body: formData,
+          });
+
+          const result = await response.json();
+          uploadStatus.textContent = result.message;
+
+          if (result.success) {
+            imageInput.value = "";
+            await loadGalleries();
+          }
+        } catch (error) {
+          console.error("Upload error:", error);
+          uploadStatus.textContent = "Something went wrong during upload.";
+        } finally {
+          uploadBtn.disabled = false;
+        }
+      });
+
+      async function deleteImage(clientName, filename) {
+        const confirmed = confirm(`Delete ${filename}?`);
+        if (!confirmed) return;
+
+        try {
+          const response = await fetch("/api/admin/images", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ clientName, filename }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            await loadGalleries();
+          } else {
+            alert(result.message || "Delete failed");
+          }
+        } catch (error) {
+          console.error("Delete error:", error);
+          alert("Something went wrong deleting the image.");
+        }
+      }
+
+      loadGalleries();
+      window.deleteImage = deleteImage;
+    </script>
+  </body>
 </html>
