@@ -39,7 +39,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   limits: {
-    fileSize: 5000 * 1024 * 1024,
+    fileSize: 2000 * 1024 * 1024,
   },
   fileFilter: (req, file, cb) => {
     const allowed = ["image/jpeg", "image/png", "image/webp"];
@@ -188,6 +188,41 @@ router.delete("/images", (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to delete image",
+    });
+  }
+});
+
+router.delete("/galleries", (req, res) => {
+  try {
+    const clientName = sanitizeFolderName(req.body.clientName || "");
+
+    if (!clientName) {
+      return res.status(400).json({
+        success: false,
+        message: "Client name is required",
+      });
+    }
+
+    const galleryPath = path.join(STORAGE_ROOT, clientName);
+
+    if (!fs.existsSync(galleryPath)) {
+      return res.status(404).json({
+        success: false,
+        message: "Gallery folder not found",
+      });
+    }
+
+    fs.rmSync(galleryPath, { recursive: true, force: true });
+
+    return res.json({
+      success: true,
+      message: `Gallery "${clientName}" deleted successfully`,
+    });
+  } catch (error) {
+    console.error("Delete gallery error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete gallery",
     });
   }
 });
