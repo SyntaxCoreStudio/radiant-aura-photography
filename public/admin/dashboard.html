@@ -634,7 +634,7 @@
           .closest(".gallery-card")
           .querySelector(".primary-btn");
 
-        const isOpen = container.style.display === "flex";
+        const isOpen = window.getComputedStyle(container).display !== "none";
 
         if (isOpen) {
           container.style.display = "none";
@@ -644,7 +644,6 @@
 
         button.textContent = "Close";
 
-        // Already loaded, just open it
         if (container.dataset.loaded === "true") {
           container.style.display = "grid";
           return;
