@@ -200,6 +200,36 @@ app.get("/api/client/gallery", async (req, res) => {
   }
 });
 
+app.get("/api/client/download", async (req, res) => {
+  try {
+    const token = String(req.query.token || "").trim();
+    const filename = String(req.query.filename || "").trim();
+
+    if (!token || !filename) {
+      return res.status(400).send("Missing token or filename.");
+    }
+
+    const shareLinks = readShareLinks();
+    const entry = shareLinks[token];
+
+    if (!entry) {
+      return res.status(404).send("Invalid or expired link.");
+    }
+
+    const clientName = entry.gallery;
+    const filePath = path.join(CLIENT_GALLERIES_DIR, clientName, filename);
+
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).send("File not found.");
+    }
+
+    return res.download(filePath, filename);
+  } catch (error) {
+    console.error("Download error:", error);
+    return res.status(500).send("Failed to download file.");
+  }
+});
+
 // Test route
 app.get("/health", (req, res) => {
   res.send("Radiant Aura server is running");

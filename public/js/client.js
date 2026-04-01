@@ -103,29 +103,35 @@ async function loadClientGallery() {
     statusMessage.textContent = `${result.images.length} image(s) found`;
 
     clientGalleryGrid.innerHTML = result.images
-      .map(
-        (image) => `
-      <article class="client-image-card" data-url="${image.url}" data-name="${escapeHtml(image.filename)}">
-        <img src="${image.url}" alt="${escapeHtml(image.filename)}" loading="lazy" />
+      .map((image) => {
+        const imageName = escapeHtml(image.filename);
+        const downloadUrl = `/api/client/download?token=${encodeURIComponent(token)}&filename=${encodeURIComponent(image.filename)}`;
+
+        return `
+      <article class="client-image-card" data-url="${image.url}" data-name="${imageName}">
+        <img src="${image.url}" alt="${imageName}" loading="lazy" />
         <div class="client-image-info">
-          <p class="client-image-name">${escapeHtml(image.filename)}</p>
+          <p class="client-image-name">${imageName}</p>
           <a
             class="download-btn"
-            href="${image.url}"
-            download="${escapeHtml(image.filename)}"
+            href="${downloadUrl}"
           >
             Download
           </a>
         </div>
       </article>
-    `,
-      )
+    `;
+      })
       .join("");
 
     const cards = clientGalleryGrid.querySelectorAll(".client-image-card");
 
     cards.forEach((card) => {
-      card.addEventListener("click", () => {
+      card.addEventListener("click", (event) => {
+        if (event.target.closest(".download-btn")) {
+          return;
+        }
+
         const imageUrl = card.dataset.url;
         const imageName = card.dataset.name;
         openLightbox(imageUrl, imageName);
