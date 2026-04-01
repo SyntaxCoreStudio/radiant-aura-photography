@@ -36,9 +36,9 @@ async function readJsonResponse(response) {
   return result;
 }
 
-function getGalleryFromUrl() {
+function getTokenFromUrl() {
   const params = new URLSearchParams(window.location.search);
-  return params.get("gallery") || "";
+  return params.get("token") || "";
 }
 
 function openLightbox(imageUrl, imageName) {
@@ -67,21 +67,21 @@ document.addEventListener("keydown", (event) => {
 });
 
 async function loadClientGallery() {
-  const gallery = getGalleryFromUrl();
+  const token = getTokenFromUrl();
 
-  if (!gallery) {
+  if (!token) {
     galleryTitle.textContent = "No gallery selected";
-    statusMessage.textContent = "This link is missing a gallery name.";
+    statusMessage.textContent = "This link is missing a share token.";
     clientGalleryGrid.innerHTML = "";
     return;
   }
 
-  galleryTitle.textContent = gallery;
+  galleryTitle.textContent = "Client Gallery";
   statusMessage.textContent = "Loading images...";
 
   try {
     const response = await fetch(
-      `/api/client/gallery?gallery=${encodeURIComponent(gallery)}`,
+      `/api/client/gallery?token=${encodeURIComponent(token)}`,
     );
 
     const result = await readJsonResponse(response);
@@ -91,6 +91,8 @@ async function loadClientGallery() {
       clientGalleryGrid.innerHTML = "";
       return;
     }
+
+    galleryTitle.textContent = result.gallery || "Client Gallery";
 
     if (!result.images || result.images.length === 0) {
       statusMessage.textContent = "No images found in this gallery yet.";

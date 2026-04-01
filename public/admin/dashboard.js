@@ -410,20 +410,35 @@ async function toggleFolder(folderId) {
   }
 }
 
-function shareGallery(clientName) {
-  const encodedName = encodeURIComponent(clientName);
-
-  const shareUrl = `${window.location.origin}/client?gallery=${encodedName}`;
-
-  // Copy to clipboard
-  navigator.clipboard
-    .writeText(shareUrl)
-    .then(() => {
-      alert(`Share link copied:\n\n${shareUrl}`);
-    })
-    .catch(() => {
-      prompt("Copy this link:", shareUrl);
+async function shareGallery(clientName) {
+  try {
+    const response = await fetch("/api/admin/share-link", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ clientName }),
     });
+
+    const result = await readJsonResponse(response);
+
+    if (!result.success || !result.shareUrl) {
+      throw new Error(result.message || "Failed to create share link.");
+    }
+
+    await navigator.clipboard.writeText(result.shareUrl);
+    alert(`Share link copied:\n\n${result.shareUrl}`);
+  } catch (error) {
+    console.error("Share gallery error:", error);
+
+    if (error.message) {
+      alert(error.message);
+      return;
+    }
+
+    alert("Something went wrong creating the share link.");
+  }
 }
 
 loadGalleries();
