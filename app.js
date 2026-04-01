@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const session = require("express-session");
 require("dotenv").config();
 
@@ -9,6 +10,9 @@ const apiAdminRoutes = require("./routes/api-admin");
 
 const app = express();
 const PORT = process.env.PORT || 3005;
+
+const PUBLIC_DIR = path.join(__dirname, "public");
+const STORAGE_DIR = path.join(__dirname, "storage");
 
 app.set("trust proxy", 1);
 
@@ -30,15 +34,66 @@ app.use(
 );
 
 // Serve public files
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(PUBLIC_DIR));
 
 // Serve uploaded files
-app.use("/uploads", express.static(path.join(__dirname, "storage")));
+app.use("/uploads", express.static(STORAGE_DIR));
 
 // API routes
 app.use("/api/contact", contactRoutes);
 app.use("/api/admin", apiAdminRoutes);
 app.use("/admin", adminRoutes);
+
+// Client gallery page
+app.get("/client", (req, res) => {
+  res.sendFile(path.join(PUBLIC_DIR, "client.html"));
+});
+
+// Public client gallery API
+app.get("/api/client/gallery", async (req, res) => {
+  try {
+    const clientName = String(req.query.gallery || "").trim();
+
+    if (!clientName) {
+      return res.status(400).json({
+        success: false,
+        message: "Gallery name is required.",
+      });
+    }
+
+    const galleryPath = path.join(STORAGE_DIR, clientName);
+
+    if (!fs.existsSync(galleryPath)) {
+      return res.status(404).json({
+        success: false,
+        message: "Gallery not found.",
+      });
+    }
+
+    const files = await fs.promises.readdir(galleryPath);
+
+    const imageFiles = files.filter((file) =>
+      /\.(jpg|jpeg|png|webp)$/i.test(file),
+    );
+
+    const images = imageFiles.map((filename) => ({
+      filename,
+      url: `/uploads/${encodeURIComponent(clientName)}/${encodeURIComponent(filename)}`,
+    }));
+
+    return res.json({
+      success: true,
+      gallery: clientName,
+      images,
+    });
+  } catch (error) {
+    console.error("Client gallery error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to load gallery.",
+    });
+  }
+});
 
 // Test route
 app.get("/health", (req, res) => {

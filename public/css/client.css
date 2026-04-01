@@ -1,0 +1,154 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f4f2;
+  color: #222;
+}
+
+.client-header {
+  background: white;
+  border-bottom: 1px solid #e7e7e7;
+  padding: 1.25rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.client-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.gallery-subtitle {
+  margin: 0.45rem 0 0 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+.client-main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem 2rem;
+}
+
+.client-card {
+  background: white;
+  border-radius: 18px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1.5rem;
+}
+
+.intro-card h2 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.intro-text {
+  margin: 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.status-message {
+  margin-bottom: 1rem;
+  color: #555;
+  font-size: 0.98rem;
+}
+
+.client-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.client-image-card {
+  background: #fcfcfc;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.client-image-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+}
+
+.client-image-card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  background: #f0f0f0;
+}
+
+.client-image-info {
+  padding: 0.8rem 0.9rem;
+}
+
+.client-image-name {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #444;
+  word-break: break-word;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+}
+
+.lightbox.hidden {
+  display: none;
+}
+
+.lightbox img {
+  max-width: 95vw;
+  max-height: 90vh;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  background: white;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 999px;
+  background: white;
+  color: black;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .client-image-card img {
+    height: 220px;
+  }
+
+  .client-card {
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client Gallery | Radiant Aura Photography</title>
+    <link rel="stylesheet" href="css/client.css" />
+  </head>
+  <body>
+    <header class="client-header">
+      <div class="header-inner">
+        <h1>Radiant Aura Photography</h1>
+        <p id="galleryTitle" class="gallery-subtitle">Loading gallery...</p>
+      </div>
+    </header>
+
+    <main class="client-main">
+      <section class="client-card intro-card">
+        <h2>Your Gallery</h2>
+        <p class="intro-text">
+          Thank you for choosing Radiant Aura Photography. Your images are
+          displayed below.
+        </p>
+      </section>
+
+      <section class="client-card">
+        <div id="statusMessage" class="status-message">Loading images...</div>
+        <div id="clientGalleryGrid" class="client-gallery-grid"></div>
+      </section>
+    </main>
+
+    <div id="lightbox" class="lightbox hidden">
+      <button
+        id="lightboxClose"
+        class="lightbox-close"
+        aria-label="Close preview"
+      >
+        ×
+      </button>
+      <img id="lightboxImage" src="" alt="Preview" />
+    </div>
+
+    <script src="js/client.js"></script>
+  </body>
+</html>
