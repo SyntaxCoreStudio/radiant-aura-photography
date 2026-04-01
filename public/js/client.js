@@ -105,13 +105,20 @@ async function loadClientGallery() {
     clientGalleryGrid.innerHTML = result.images
       .map(
         (image) => `
-          <article class="client-image-card" data-url="${image.url}" data-name="${escapeHtml(image.filename)}">
-            <img src="${image.url}" alt="${escapeHtml(image.filename)}" loading="lazy" />
-            <div class="client-image-info">
-              <p class="client-image-name">${escapeHtml(image.filename)}</p>
-            </div>
-          </article>
-        `,
+      <article class="client-image-card" data-url="${image.url}" data-name="${escapeHtml(image.filename)}">
+        <img src="${image.url}" alt="${escapeHtml(image.filename)}" loading="lazy" />
+        <div class="client-image-info">
+          <p class="client-image-name">${escapeHtml(image.filename)}</p>
+          <a
+            class="download-btn"
+            href="${image.url}"
+            download="${escapeHtml(image.filename)}"
+          >
+            Download
+          </a>
+        </div>
+      </article>
+    `,
       )
       .join("");
 
