@@ -120,12 +120,12 @@ async function loadGalleries() {
       </div>
 
 <div class="gallery-actions">
-<button
-  class="primary-btn toggle-btn"
-  onclick="toggleFolder('${escapeJsString(folderId)}')"
->
-  Open
-</button>
+  <button
+    class="primary-btn toggle-btn"
+    onclick="toggleFolder('${escapeJsString(folderId)}')"
+  >
+    Open
+  </button>
 
   <button
     class="primary-btn"
@@ -135,12 +135,20 @@ async function loadGalleries() {
   </button>
 
   <button
+    class="secondary-btn"
+    onclick="regenerateShareLink('${escapeJsString(gallery.name)}')"
+  >
+    Regenerate Link
+  </button>
+
+  <button
     class="danger-btn"
     onclick="deleteGallery('${escapeJsString(gallery.name)}')"
   >
     Delete
   </button>
 </div>
+
     </div>
 
     <div id="${folderId}" class="gallery-images" style="display:none;"></div>
@@ -441,8 +449,40 @@ async function shareGallery(clientName) {
   }
 }
 
+async function regenerateShareLink(clientName) {
+  const confirmed = confirm(
+    `Regenerate the share link for "${clientName}"?\n\nThe old link will stop working.`,
+  );
+
+  if (!confirmed) return;
+
+  try {
+    const response = await fetch("/api/admin/regenerate-share-link", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ clientName }),
+    });
+
+    const result = await readJsonResponse(response);
+
+    if (!result.success || !result.shareUrl) {
+      throw new Error(result.message || "Failed to regenerate share link.");
+    }
+
+    await navigator.clipboard.writeText(result.shareUrl);
+    alert(`New share link copied:\n\n${result.shareUrl}`);
+  } catch (error) {
+    console.error("Regenerate share link error:", error);
+    alert(error.message || "Something went wrong regenerating the share link.");
+  }
+}
+
 loadGalleries();
 window.deleteImage = deleteImage;
 window.deleteGallery = deleteGallery;
 window.toggleFolder = toggleFolder;
 window.shareGallery = shareGallery;
+window.regenerateShareLink = regenerateShareLink;

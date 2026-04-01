@@ -117,7 +117,7 @@ async function loadClientGallery() {
           <article class="client-image-card" data-url="${image.url}" data-name="${imageName}">
             <img src="${image.url}" alt="${imageName}" loading="lazy" />
             <div class="client-image-info">
-              <p class="client-image-name">${imageName}</p>
+                <p class="client-image-name">Tap to preview</p>
             </div>
           </article>
         `;

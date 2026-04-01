@@ -144,6 +144,60 @@ app.post("/api/admin/share-link", requireAdmin, async (req, res) => {
   }
 });
 
+app.post("/api/admin/regenerate-share-link", requireAdmin, async (req, res) => {
+  try {
+    const clientName = String(req.body.clientName || "").trim();
+
+    if (!clientName) {
+      return res.status(400).json({
+        success: false,
+        message: "Gallery name is required.",
+      });
+    }
+
+    const galleryPath = path.join(CLIENT_GALLERIES_DIR, clientName);
+
+    if (!fs.existsSync(galleryPath)) {
+      return res.status(404).json({
+        success: false,
+        message: "Gallery not found.",
+      });
+    }
+
+    const shareLinks = readShareLinks();
+
+    for (const [token, value] of Object.entries(shareLinks)) {
+      if (value.gallery === clientName) {
+        delete shareLinks[token];
+      }
+    }
+
+    const newToken = generateToken();
+
+    shareLinks[newToken] = {
+      gallery: clientName,
+      createdAt: new Date().toISOString(),
+    };
+
+    writeShareLinks(shareLinks);
+
+    const shareUrl = `${req.protocol}://${req.get("host")}/client?token=${newToken}`;
+
+    return res.json({
+      success: true,
+      token: newToken,
+      shareUrl,
+      message: "Share link regenerated successfully.",
+    });
+  } catch (error) {
+    console.error("Regenerate share link error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to regenerate share link.",
+    });
+  }
+});
+
 // Public client gallery API using token
 app.get("/api/client/gallery", async (req, res) => {
   try {
