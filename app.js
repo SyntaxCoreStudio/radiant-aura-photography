@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const crypto = require("crypto");
+const archiver = require("archiver");
 const session = require("express-session");
 require("dotenv").config();
 
@@ -227,6 +228,74 @@ app.get("/api/client/download", async (req, res) => {
   } catch (error) {
     console.error("Download error:", error);
     return res.status(500).send("Failed to download file.");
+  }
+});
+
+app.get("/api/client/download-all", async (req, res) => {
+  try {
+    const token = String(req.query.token || "").trim();
+
+    if (!token) {
+      return res.status(400).send("Missing share token.");
+    }
+
+    const shareLinks = readShareLinks();
+    const entry = shareLinks[token];
+
+    if (!entry) {
+      return res.status(404).send("Invalid or expired link.");
+    }
+
+    const clientName = entry.gallery;
+    const galleryPath = path.join(CLIENT_GALLERIES_DIR, clientName);
+
+    if (!fs.existsSync(galleryPath)) {
+      return res.status(404).send("Gallery not found.");
+    }
+
+    const files = await fs.promises.readdir(galleryPath);
+    const imageFiles = files.filter((file) =>
+      /\.(jpg|jpeg|png|webp)$/i.test(file),
+    );
+
+    if (imageFiles.length === 0) {
+      return res.status(404).send("No images found in this gallery.");
+    }
+
+    const safeName =
+      clientName.replace(/[^a-z0-9-_]+/gi, "-").replace(/^-+|-+$/g, "") ||
+      "gallery";
+
+    res.setHeader("Content-Type", "application/zip");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${safeName}-gallery.zip"`,
+    );
+
+    const archive = archiver("zip", {
+      zlib: { level: 9 },
+    });
+
+    archive.on("error", (error) => {
+      console.error("ZIP archive error:", error);
+      if (!res.headersSent) {
+        res.status(500).send("Failed to create ZIP file.");
+      } else {
+        res.end();
+      }
+    });
+
+    archive.pipe(res);
+
+    for (const filename of imageFiles) {
+      const filePath = path.join(galleryPath, filename);
+      archive.file(filePath, { name: filename });
+    }
+
+    await archive.finalize();
+  } catch (error) {
+    console.error("Download all error:", error);
+    return res.status(500).send("Failed to download gallery ZIP.");
   }
 });
 

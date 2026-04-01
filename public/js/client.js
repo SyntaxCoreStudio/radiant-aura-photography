@@ -5,6 +5,7 @@ const clientGalleryGrid = document.getElementById("clientGalleryGrid");
 const lightbox = document.getElementById("lightbox");
 const lightboxImage = document.getElementById("lightboxImage");
 const lightboxClose = document.getElementById("lightboxClose");
+const downloadAllBtn = document.getElementById("downloadAllBtn");
 
 function escapeHtml(value) {
   return String(value)
@@ -73,11 +74,14 @@ async function loadClientGallery() {
     galleryTitle.textContent = "No gallery selected";
     statusMessage.textContent = "This link is missing a share token.";
     clientGalleryGrid.innerHTML = "";
+    downloadAllBtn.style.display = "none";
     return;
   }
 
   galleryTitle.textContent = "Client Gallery";
   statusMessage.textContent = "Loading images...";
+  downloadAllBtn.href = `/api/client/download-all?token=${encodeURIComponent(token)}`;
+  downloadAllBtn.style.display = "none";
 
   try {
     const response = await fetch(
@@ -89,6 +93,7 @@ async function loadClientGallery() {
     if (!result.success) {
       statusMessage.textContent = result.message || "Failed to load gallery.";
       clientGalleryGrid.innerHTML = "";
+      downloadAllBtn.style.display = "none";
       return;
     }
 
@@ -97,41 +102,32 @@ async function loadClientGallery() {
     if (!result.images || result.images.length === 0) {
       statusMessage.textContent = "No images found in this gallery yet.";
       clientGalleryGrid.innerHTML = "";
+      downloadAllBtn.style.display = "none";
       return;
     }
 
     statusMessage.textContent = `${result.images.length} image(s) found`;
+    downloadAllBtn.style.display = "inline-flex";
 
     clientGalleryGrid.innerHTML = result.images
       .map((image) => {
         const imageName = escapeHtml(image.filename);
-        const downloadUrl = `/api/client/download?token=${encodeURIComponent(token)}&filename=${encodeURIComponent(image.filename)}`;
 
         return `
-      <article class="client-image-card" data-url="${image.url}" data-name="${imageName}">
-        <img src="${image.url}" alt="${imageName}" loading="lazy" />
-        <div class="client-image-info">
-          <p class="client-image-name">${imageName}</p>
-          <a
-            class="download-btn"
-            href="${downloadUrl}"
-          >
-            Download
-          </a>
-        </div>
-      </article>
-    `;
+          <article class="client-image-card" data-url="${image.url}" data-name="${imageName}">
+            <img src="${image.url}" alt="${imageName}" loading="lazy" />
+            <div class="client-image-info">
+              <p class="client-image-name">${imageName}</p>
+            </div>
+          </article>
+        `;
       })
       .join("");
 
     const cards = clientGalleryGrid.querySelectorAll(".client-image-card");
 
     cards.forEach((card) => {
-      card.addEventListener("click", (event) => {
-        if (event.target.closest(".download-btn")) {
-          return;
-        }
-
+      card.addEventListener("click", () => {
         const imageUrl = card.dataset.url;
         const imageName = card.dataset.name;
         openLightbox(imageUrl, imageName);
@@ -142,6 +138,7 @@ async function loadClientGallery() {
     statusMessage.textContent =
       error.message || "Something went wrong loading the gallery.";
     clientGalleryGrid.innerHTML = "";
+    downloadAllBtn.style.display = "none";
   }
 }
 
