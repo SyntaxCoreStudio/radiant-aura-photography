@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3005;
 
 const PUBLIC_DIR = path.join(__dirname, "public");
 const STORAGE_DIR = path.join(__dirname, "storage");
+const CLIENT_GALLERIES_DIR = path.join(STORAGE_DIR, "client-galleries");
 
 app.set("trust proxy", 1);
 
@@ -61,7 +62,7 @@ app.get("/api/client/gallery", async (req, res) => {
       });
     }
 
-    const galleryPath = path.join(STORAGE_DIR, clientName);
+    const galleryPath = path.join(CLIENT_GALLERIES_DIR, clientName);
 
     if (!fs.existsSync(galleryPath)) {
       return res.status(404).json({
@@ -78,7 +79,7 @@ app.get("/api/client/gallery", async (req, res) => {
 
     const images = imageFiles.map((filename) => ({
       filename,
-      url: `/uploads/${encodeURIComponent(clientName)}/${encodeURIComponent(filename)}`,
+      url: `/uploads/client-galleries/${encodeURIComponent(clientName)}/${encodeURIComponent(filename)}`,
     }));
 
     return res.json({
