@@ -1,5 +1,5 @@
 /* Import a classy Serif font for headings */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap");
 
 @font-face {
   font-family: "Amsterdam";
@@ -14,14 +14,16 @@
   --transition: all 0.3s ease;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
   padding: 0;
   color: var(--text-main);
   background-color: var(--bg-light);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   line-height: 1.6;
 }
 
@@ -54,7 +56,9 @@ header nav {
   transition: var(--transition);
 }
 
-.navbar li a:hover { color: #0049ac; }
+.navbar li a:hover {
+  color: #0049ac;
+}
 
 /* --- TITLE BAR (Logo Area) --- */
 #titleBar {
@@ -72,7 +76,7 @@ header nav {
 }
 
 #subTitle {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   text-transform: uppercase;
   letter-spacing: 6px;
   font-size: 0.9rem;
@@ -103,7 +107,9 @@ header nav {
   transition: var(--transition);
 }
 
-.carousel img:hover { filter: grayscale(0%); }
+.carousel img:hover {
+  filter: grayscale(0%);
+}
 
 /* --- ABOUT SECTION --- */
 #aboutMe {
@@ -113,7 +119,7 @@ header nav {
 }
 
 #aboutMe h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 40px;
@@ -135,7 +141,7 @@ header nav {
 }
 
 .contact-section h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   color: var(--primary-dark);
 }
 
@@ -144,7 +150,8 @@ header nav {
   margin: 0 auto;
 }
 
-.contact-section input, .contact-section textarea {
+.contact-section input,
+.contact-section textarea {
   border: 1px solid #ccc;
   background: white;
   border-radius: 4px;
@@ -164,7 +171,10 @@ header nav {
   border-top: 1px solid #eee;
 }
 
-.social-icons a { color: #444; margin: 0 15px; }
+.social-icons a {
+  color: #444;
+  margin: 0 15px;
+}
 
 /* --- Optimized Masonry Gallery Grid --- */
 .gallery-section {
@@ -187,8 +197,10 @@ header nav {
   break-inside: avoid; /* Prevents images from splitting across columns */
   overflow: hidden; /* Helps with hover effects */
   border-radius: 4px; /* A clean, modern subtle corner */
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Soft, airy shadow */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Soft, airy shadow */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .gallery-item img {
@@ -202,7 +214,7 @@ header nav {
 /* Premium Hover Effects */
 .gallery-item:hover {
   transform: translateY(-5px); /* Gentle lift */
-  box-shadow: 0 8px 30px rgba(0,0,0,0.1); /* Slightly deeper shadow */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1); /* Slightly deeper shadow */
 }
 
 .gallery-item:hover img {
@@ -227,7 +239,7 @@ header nav {
 }
 
 .category-carousel h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 1.4rem;
   margin-bottom: 15px;
   color: var(--primary-dark);
@@ -273,7 +285,9 @@ header nav {
   break-inside: avoid; /* Prevents image from splitting across columns */
   border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   background-color: #f0f0f0; /* Placeholder color while loading */
 }
 
@@ -328,7 +342,7 @@ header nav {
 }
 
 .pricing-header h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 3rem;
   margin-bottom: 10px;
   color: var(--primary-dark);
@@ -348,7 +362,7 @@ header nav {
   border: 1px solid #eee;
   padding: 60px 40px;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   max-width: 500px;
   margin: 0 auto 40px;
   transition: transform 0.3s ease;
@@ -360,7 +374,7 @@ header nav {
 
 .price-value {
   font-size: 4rem;
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   color: var(--primary-dark);
   margin-bottom: 30px;
 }
@@ -373,7 +387,7 @@ header nav {
 
 .price-value .duration {
   font-size: 1rem;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   color: #888;
   display: block;
   margin-top: -10px;
@@ -435,100 +449,102 @@ header nav {
 
 /* --- CONTACT SECTION REVAMP --- */
 .contact-section {
-    max-width: 700px;
-    margin: 100px auto;
-    padding: 0 20px;
-    background: transparent; /* Removing the heavy blue gradient */
-    box-shadow: none;
+  max-width: 700px;
+  margin: 100px auto;
+  padding: 0 20px;
+  background: transparent; /* Removing the heavy blue gradient */
+  box-shadow: none;
 }
 
 .contact-header {
-    text-align: center;
-    margin-bottom: 50px;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
 .contact-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    color: var(--primary-dark);
-    margin-bottom: 10px;
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  color: var(--primary-dark);
+  margin-bottom: 10px;
 }
 
 .contact-header p {
-    color: #888;
-    font-size: 1rem;
+  color: #888;
+  font-size: 1rem;
 }
 
 #contactForm {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .form-group label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #555;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #555;
 }
 
-.contact-section input, 
+.contact-section input,
 .contact-section textarea {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-family: 'Inter', sans-serif;
-    background-color: #fff;
-    color: var(--text-main);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  background-color: #fff;
+  color: var(--text-main);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 /* Subtle focus effect instead of bright blue glow */
-.contact-section input:focus, 
+.contact-section input:focus,
 .contact-section textarea:focus {
-    outline: none;
-    border-color: #0049ac;
-    box-shadow: 0 0 0 4px rgba(0, 73, 172, 0.05);
+  outline: none;
+  border-color: #0049ac;
+  box-shadow: 0 0 0 4px rgba(0, 73, 172, 0.05);
 }
 
 .contact-section button {
-    margin-top: 10px;
-    padding: 18px;
-    background: var(--primary-dark);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  margin-top: 10px;
+  padding: 18px;
+  background: var(--primary-dark);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .contact-section button:hover {
-    background: #0049ac;
-    transform: translateY(-2px);
+  background: #0049ac;
+  transform: translateY(-2px);
 }
 
 /* Loading Spinner Adjustments */
 .btn-loader {
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top: 2px solid #fff;
-    width: 16px;
-    height: 16px;
-    margin-left: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #fff;
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
 }
 
 /* Responsive Adjustments */
@@ -551,7 +567,7 @@ header nav {
     grid-template-columns: 1fr; /* Stack vertically */
     gap: 40px;
   }
-  
+
   .carousel-preview {
     aspect-ratio: 3 / 2; /* Switch to landscape on mobile for easier scrolling */
   }
@@ -572,12 +588,25 @@ header nav {
     padding: 0 20px;
     margin: 40px auto;
   }
-  
+
+  .section-grid.home {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .section-grid.home .col {
+    width: 100%;
+    max-width: 100%;
+    float: none;
+    display: block;
+  }
+
   .gallery-grid {
-    column-count: 2; /* Drop down to 2 columns */
+    column-count: 2;
     column-gap: 12px;
   }
-  
+
   .gallery-item {
     margin-bottom: 12px;
   }
