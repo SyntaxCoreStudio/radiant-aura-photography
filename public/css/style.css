@@ -133,6 +133,14 @@ header nav {
   text-align: left;
 }
 
+.section-grid.home {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 60px;
+  align-items: start;
+  text-align: left;
+}
+
 /* --- CONTACT SECTION --- */
 .contact-section {
   background: #f0f4f7; /* Soft cool grey instead of loud gradient */
